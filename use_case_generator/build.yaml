@@ -1,0 +1,20 @@
+targets:
+  $default:
+    builders:
+      use_case_generator|use_case:
+        enabled: true
+        generate_for:
+          exclude:
+            - test
+            - example
+          include:
+            - test/integration/*
+
+builders:
+  use_case:
+    import: "package:use_case_generator/builder.dart"
+    builder_factories: ["useCaseGenerator"]
+    build_extensions: { ".dart": [".use_case.g.dart"] }
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["injectable_generator|injectable_builder"]
