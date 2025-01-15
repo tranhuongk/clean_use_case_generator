@@ -95,13 +95,13 @@ class ClassGenerator {
     _newLine();
 
     // 4. Const class constructor
-    _writeln('const $methodClassName(');
+    _writeln('const $methodClassName(this.$_repoClassNameParameter);');
 
     // 5. Required repo class parameter
-    _writeln('this.$_repoClassNameParameter,');
+    // _writeln('');
 
     // 6. Close constructor
-    _writeln(');');
+    // _writeln(');');
     _newLine();
 
     // 7. Defintion of 'call' function
@@ -117,7 +117,10 @@ class ClassGenerator {
     _writeln('return $_repoClassNameParameter.$methodName(');
     for (var parameter in methodParameters) {
       final parameterName = parameter.name;
-      _writeln('params.$parameterName,');
+      _writeln([
+        if (parameter.isNamed) parameterName,
+        'params.$parameterName,',
+      ].join(':'));
     }
     _writeln(');');
 
@@ -161,7 +164,12 @@ class ClassGenerator {
     // 4. Required parameters
     for (var parameter in parameters) {
       final parameterName = parameter.name;
-      _writeln('required this.$parameterName,');
+      _writeln([
+        if (parameter.isRequired) 'required',
+        'this.$parameterName',
+        if (parameter.hasDefaultValue) '= ${parameter.defaultValueCode}',
+        ','
+      ].join(' '));
     }
 
     // 5. Close constructor

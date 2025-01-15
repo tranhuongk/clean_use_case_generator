@@ -5,4 +5,4 @@ class UseCase {
   final bool injectable;
 }
 
-const useCase = UseCase();
+const usecase = UseCase();
